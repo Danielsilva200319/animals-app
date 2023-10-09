@@ -13,10 +13,16 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 {
     private readonly AnimalsContext _context;
     private PaisRepository _paises;
-    public UnitOfWork(AnimalsContext context)
-    {
-        _context = context;
-    }
+    private CiudadRepository _ciudades;
+    private DepartamentoRepository _departamentos;
+    private ClienteRepository _clientes;
+
+    private MascotaRepository _mascotas;
+    private RazaRepository _razas;
+    private ServicioRepository _servicios;
+    private ClienteDirRepository _clientesDirs;
+    private ClienteTelRepository _clientesTels;
+
     public IPaisRepository Paises
     {
         get
@@ -27,6 +33,98 @@ public class UnitOfWork : IUnitOfWork, IDisposable
             }
             return _paises;
         }
+    }
+    public ICiudadRepository Ciudades
+    {
+        get
+        {
+            if(_ciudades == null)
+            {
+                _ciudades = new CiudadRepository(_context);
+            }
+            return _ciudades;
+        }
+    }
+    public IDepartamentoRepository Departamentos
+    {
+        get
+        {
+            if(_departamentos == null)
+            {
+                _departamentos = new DepartamentoRepository(_context);
+            }
+            return _departamentos;
+        }
+    }
+    public IClienteRepository Clientes
+    {
+        get
+        {
+            if(_clientes == null)
+            {
+                _clientes = new ClienteRepository(_context);
+            }
+            return _clientes;
+        }
+    }
+    public IMascotaRepository Mascotas
+    {
+        get
+        {
+            if(_mascotas == null)
+            {
+                _mascotas = new MascotaRepository(_context);
+            }
+            return _mascotas;
+        }
+    }
+    public IRazaRepository Razas
+    {
+        get
+        {
+            if(_razas == null)
+            {
+                _razas = new RazaRepository(_context);
+            }
+            return _razas;
+        }
+    }
+    public IServicioRepository Servicios
+    {
+        get
+        {
+            if(_servicios == null)
+            {
+                _servicios = new ServicioRepository(_context);
+            }
+            return _servicios;
+        }
+    }
+    public IClienteTelRepository ClientesTels
+    {
+        get
+        {
+            if(_clientesTels == null)
+            {
+                _clientesTels = new ClienteTelRepository(_context);
+            }
+            return _clientesTels;
+        }
+    }
+    public IClienteDirRepository ClientesDirs
+    {
+        get
+        {
+            if(_clientesDirs == null)
+            {
+                _clientesDirs = new ClienteDirRepository(_context);
+            }
+            return _clientesDirs;
+        }
+    }
+    public UnitOfWork(AnimalsContext context)
+    {
+        _context = context;
     }
     public async Task<int> SaveAsync()
     {
