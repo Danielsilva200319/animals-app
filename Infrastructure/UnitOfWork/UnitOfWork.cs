@@ -22,6 +22,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private ServicioRepository _servicios;
     private ClienteDirRepository _clientesDirs;
     private ClienteTelRepository _clientesTels;
+    public object ciudades;
 
     public IPaisRepository Paises
     {

@@ -14,6 +14,7 @@ namespace ApiAnimals.Profiles
         public MappingProfiles()
         {
             CreateMap<Pais,PaisDto>().ReverseMap();
+            CreateMap<Ciudad,CiudadDto>().ReverseMap();
         }
     }
 }
