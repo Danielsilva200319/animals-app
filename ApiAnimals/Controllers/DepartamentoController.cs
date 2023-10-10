@@ -32,14 +32,14 @@ namespace ApiAnimals.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CiudadDto>> Get(int id)
+        public async Task<ActionResult<DepartamentoDto>> Get(int id)
         {
             var departamento = await _unitOfWork.Departamentos.GetByIdAsync(id);
             if (departamento == null)
             {
                 return NotFound();
             }
-            return _mapper.Map<CiudadDto>(departamento);
+            return _mapper.Map<DepartamentoDto>(departamento);
         }
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -60,21 +60,30 @@ namespace ApiAnimals.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<DepartamentoDto>> Put(string id, [FromBody] DepartamentoDto departamentoDto)
+        public async Task<ActionResult<DepartamentoDto>> Put(int id, [FromBody] DepartamentoDto departamentoDto)
         {
-            if (departamentoDto == null)
+            var departamentos = _mapper.Map<Departamento>(departamentoDto);
+            if (departamentos == null)
             {
                 return NotFound();
             }
-            var departamentos = _mapper.Map<Departamento>(departamentoDto);
+            if (departamentos.Id == 0)
+            {
+                departamentos.Id = id;
+            }
+            if (departamentos.Id != id)
+            {
+                return BadRequest();
+            }
+            departamentoDto.Id = departamentos.Id;
             _unitOfWork.Departamentos.Update(departamentos);
             await _unitOfWork.SaveAsync();
             return departamentoDto;
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Departamento>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var departamento = await _unitOfWork.Departamentos.GetByIdAsync(id);
             if (departamento == null)

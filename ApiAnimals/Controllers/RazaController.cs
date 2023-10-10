@@ -34,12 +34,12 @@ namespace ApiAnimals.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<RazaDto>> Get(int id)
         {
-            var raza = await _unitOfWork.Razas.GetByIdAsync(id);
-            if (raza == null)
+            var razas = await _unitOfWork.Razas.GetByIdAsync(id);
+            if (razas == null)
             {
                 return NotFound();
             }
-            return _mapper.Map<RazaDto>(raza);
+            return _mapper.Map<RazaDto>(razas);
         }
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -60,13 +60,22 @@ namespace ApiAnimals.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<RazaDto>> Put(string id, [FromBody] RazaDto razaDto)
+        public async Task<ActionResult<RazaDto>> Put(int id, [FromBody] RazaDto razaDto)
         {
+            var razas = _mapper.Map<Raza>(razaDto);
             if (razaDto == null)
             {
                 return NotFound();
             }
-            var razas = _mapper.Map<Raza>(razaDto);
+            if(razas.Id == 0)
+            {
+                razas.Id = id;
+            }
+            if(razas.Id != id)
+            {
+                return BadRequest();
+            }
+            razaDto.Id = razas.Id;
             _unitOfWork.Razas.Update(razas);
             await _unitOfWork.SaveAsync();
             return razaDto;

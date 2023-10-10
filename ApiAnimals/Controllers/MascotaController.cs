@@ -64,7 +64,7 @@ namespace ApiAnimals.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<MascotaDto>> Put(string id, [FromBody] MascotaDto mascotaDto)
+        public async Task<ActionResult<MascotaDto>> Put(int id, [FromBody] MascotaDto mascotaDto)
         {
             if (mascotaDto == null)
             {

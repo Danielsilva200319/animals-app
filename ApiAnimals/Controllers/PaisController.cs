@@ -62,7 +62,7 @@ public class PaisController : BaseControllerApi
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<PaisDto>> Put(string id, [FromBody]PaisDto paisDto)
+    public async Task<ActionResult<PaisDto>> Put(int id, [FromBody]PaisDto paisDto)
     {
         if(paisDto == null)
         {

@@ -33,12 +33,12 @@ namespace ApiAnimals.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ClienteDto>> Get(int id)
         {
-            var ciudad = await _unitOfWork.Ciudades.GetByIdAsync(id);
-            if (ciudad == null)
+            var cliente = await _unitOfWork.Clientes.GetByIdAsync(id);
+            if (cliente == null)
             {
                 return NotFound();
             }
-            return _mapper.Map<ClienteDto>(ciudad);
+            return _mapper.Map<ClienteDto>(cliente);
         }
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -59,28 +59,28 @@ namespace ApiAnimals.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<CiudadDto>> Put(string id, [FromBody] CiudadDto ciudadDto)
+        public async Task<ActionResult<ClienteDto>> Put(int id, [FromBody] ClienteDto clienteDto)
         {
-            if (ciudadDto == null)
+            if (clienteDto == null)
             {
                 return NotFound();
             }
-            var ciudades = _mapper.Map<Ciudad>(ciudadDto);
-            _unitOfWork.Ciudades.Update(ciudades);
+            var clientes = _mapper.Map<Cliente>(clienteDto);
+            _unitOfWork.Clientes.Update(clientes);
             await _unitOfWork.SaveAsync();
-            return ciudadDto;
+            return clienteDto;
         }
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Ciudad>> Delete(int id)
+        public async Task<ActionResult<Cliente>> Delete(int id)
         {
-            var ciudad = await _unitOfWork.Ciudades.GetByIdAsync(id);
-            if (ciudad == null)
+            var cliente = await _unitOfWork.Clientes.GetByIdAsync(id);
+            if (cliente == null)
             {
                 return NotFound();
             }
-            _unitOfWork.Ciudades.Remove(ciudad);
+            _unitOfWork.Clientes.Remove(cliente);
             await _unitOfWork.SaveAsync();
             return NoContent();
         }

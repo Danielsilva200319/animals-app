@@ -46,7 +46,7 @@ namespace ApiAnimals.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Ciudad>> Post(CiudadDto ciudadDto)
+        public async Task<ActionResult<CiudadDto>> Post(CiudadDto ciudadDto)
         {
             var ciudad = _mapper.Map<Ciudad>(ciudadDto);
             this._unitOfWork.Ciudades.Add(ciudad);
@@ -62,14 +62,26 @@ namespace ApiAnimals.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<CiudadDto>> Put(string id, [FromBody] CiudadDto ciudadDto)
+        public async Task<ActionResult<CiudadDto>> Put(int id, [FromBody] CiudadDto ciudadDto)
         {
-            if (ciudadDto == null)
+            var ciudad = _mapper.Map<Ciudad>(ciudadDto);
+            if (ciudad == null)
             {
                 return NotFound();
             }
-            var ciudades = _mapper.Map<Ciudad>(ciudadDto);
-            _unitOfWork.Ciudades.Update(ciudades);
+
+            if (ciudad.Id == 0)
+            {
+                ciudad.Id = id;
+            }
+
+            if (ciudad.Id != id)
+            {
+                return BadRequest();
+            }
+
+            ciudadDto.Id = ciudad.Id;
+            _unitOfWork.Ciudades.Update(ciudad);
             await _unitOfWork.SaveAsync();
             return ciudadDto;
         }
