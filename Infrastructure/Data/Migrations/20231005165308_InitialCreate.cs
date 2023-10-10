@@ -211,7 +211,7 @@ namespace Infrastructure.Data.Migrations
                     Especie = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     IdRaza = table.Column<int>(type: "int", nullable: false),
-                    FechaNacimiento = table.Column<DateTime>(type: "datatime(6)", nullable: false),
+                    FechaNacimiento = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     IdCliente = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

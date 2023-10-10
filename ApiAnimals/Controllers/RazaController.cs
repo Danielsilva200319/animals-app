@@ -4,20 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiAnimals.Dtos;
 using AutoMapper;
-using core.Entities;
 using core.Interfaces;
-using Infrastructure.UnitOfWork;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Core.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace ApiAnimals.Controllers
 {
-    public class CiudadController : BaseControllerApi
+    public class RazaController : BaseControllerApi
     {
-        private readonly UnitOfWork _unitOfWork;
-        private readonly Mapper _mapper;
-        public CiudadController(UnitOfWork unitOfWork, Mapper mapper)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public RazaController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -25,65 +23,65 @@ namespace ApiAnimals.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IEnumerable<CiudadDto>>> Get()
+        public async Task<ActionResult<IEnumerable<RazaDto>>> Get()
         {
-            var ciudades = await _unitOfWork.Ciudades.GetAllAsync();
-            return _mapper.Map<List<CiudadDto>>(ciudades);
+            var razas = await _unitOfWork.Razas.GetAllAsync();
+            return _mapper.Map<List<RazaDto>>(razas);
         }
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CiudadDto>> Get(int id)
+        public async Task<ActionResult<RazaDto>> Get(int id)
         {
-            var ciudad = await _unitOfWork.Ciudades.GetByIdAsync(id);
-            if (ciudad == null)
+            var raza = await _unitOfWork.Razas.GetByIdAsync(id);
+            if (raza == null)
             {
                 return NotFound();
             }
-            return _mapper.Map<CiudadDto>(ciudad);
+            return _mapper.Map<RazaDto>(raza);
         }
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Ciudad>> Post(CiudadDto ciudadDto)
+        public async Task<ActionResult<Raza>> Post(RazaDto razaDto)
         {
-            var ciudad = _mapper.Map<Ciudad>(ciudadDto);
-            this._unitOfWork.Ciudades.Add(ciudad);
+            var raza = _mapper.Map<Raza>(razaDto);
+            this._unitOfWork.Razas.Add(raza);
             await _unitOfWork.SaveAsync();
-            if (ciudad == null)
+            if (raza == null)
             {
                 return BadRequest();
             }
-            ciudadDto.Id = ciudad.Id;
-            return CreatedAtAction(nameof(Post), new { id = ciudadDto.Id }, ciudadDto);
+            razaDto.Id = raza.Id;
+            return CreatedAtAction(nameof(Post), new { id = razaDto.Id }, razaDto);
         }
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<CiudadDto>> Put(string id, [FromBody] CiudadDto ciudadDto)
+        public async Task<ActionResult<RazaDto>> Put(string id, [FromBody] RazaDto razaDto)
         {
-            if (ciudadDto == null)
+            if (razaDto == null)
             {
                 return NotFound();
             }
-            var ciudades = _mapper.Map<Ciudad>(ciudadDto);
-            _unitOfWork.Ciudades.Update(ciudades);
+            var razas = _mapper.Map<Raza>(razaDto);
+            _unitOfWork.Razas.Update(razas);
             await _unitOfWork.SaveAsync();
-            return ciudadDto;
+            return razaDto;
         }
         [HttpDelete]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<Ciudad>> Delete(int id)
+        public async Task<ActionResult<Raza>> Delete(int id)
         {
-            var ciudad = await _unitOfWork.Ciudades.GetByIdAsync(id);
-            if (ciudad == null)
+            var raza = await _unitOfWork.Razas.GetByIdAsync(id);
+            if (raza == null)
             {
                 return NotFound();
             }
-            _unitOfWork.Ciudades.Remove(ciudad);
+            _unitOfWork.Razas.Remove(raza);
             await _unitOfWork.SaveAsync();
             return NoContent();
         }

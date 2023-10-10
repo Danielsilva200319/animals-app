@@ -5,19 +5,16 @@ using System.Threading.Tasks;
 using ApiAnimals.Dtos;
 using AutoMapper;
 using core.Entities;
-using core.Interfaces;
 using Infrastructure.UnitOfWork;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 namespace ApiAnimals.Controllers
 {
-    public class CiudadController : BaseControllerApi
+    public class ClienteController : BaseControllerApi
     {
         private readonly UnitOfWork _unitOfWork;
         private readonly Mapper _mapper;
-        public CiudadController(UnitOfWork unitOfWork, Mapper mapper)
+        public ClienteController(UnitOfWork unitOfWork, Mapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -25,38 +22,38 @@ namespace ApiAnimals.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IEnumerable<CiudadDto>>> Get()
+        public async Task<ActionResult<IEnumerable<ClienteDto>>> Get()
         {
-            var ciudades = await _unitOfWork.Ciudades.GetAllAsync();
-            return _mapper.Map<List<CiudadDto>>(ciudades);
+            var clientes = await _unitOfWork.Clientes.GetAllAsync();
+            return _mapper.Map<List<ClienteDto>>(clientes);
         }
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CiudadDto>> Get(int id)
+        public async Task<ActionResult<ClienteDto>> Get(int id)
         {
             var ciudad = await _unitOfWork.Ciudades.GetByIdAsync(id);
             if (ciudad == null)
             {
                 return NotFound();
             }
-            return _mapper.Map<CiudadDto>(ciudad);
+            return _mapper.Map<ClienteDto>(ciudad);
         }
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Ciudad>> Post(CiudadDto ciudadDto)
+        public async Task<ActionResult<Cliente>> Post(ClienteDto clienteDto)
         {
-            var ciudad = _mapper.Map<Ciudad>(ciudadDto);
-            this._unitOfWork.Ciudades.Add(ciudad);
+            var cliente = _mapper.Map<Cliente>(clienteDto);
+            this._unitOfWork.Clientes.Add(cliente);
             await _unitOfWork.SaveAsync();
-            if (ciudad == null)
+            if (cliente == null)
             {
                 return BadRequest();
             }
-            ciudadDto.Id = ciudad.Id;
-            return CreatedAtAction(nameof(Post), new { id = ciudadDto.Id }, ciudadDto);
+            clienteDto.Id = cliente.Id;
+            return CreatedAtAction(nameof(Post), new { id = clienteDto.Id }, clienteDto);
         }
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

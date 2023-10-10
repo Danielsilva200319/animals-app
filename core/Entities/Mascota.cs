@@ -9,7 +9,6 @@ namespace core.Entities
 {
     public class Mascota : BaseEntity
     {
-
         [Required]
         public string Nombre { get; set; }
         [Required]

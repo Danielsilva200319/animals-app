@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ApiAnimals.Dtos;
 using AutoMapper;
 using core.Entities;
+using Core.Entities;
 
 namespace ApiAnimals.Profiles
 {
@@ -14,7 +15,10 @@ namespace ApiAnimals.Profiles
         public MappingProfiles()
         {
             CreateMap<Pais,PaisDto>().ReverseMap();
+            CreateMap<Departamento,DepartamentoDto>().ReverseMap();
             CreateMap<Ciudad,CiudadDto>().ReverseMap();
+            CreateMap<Cliente,ClienteDto>().ReverseMap();
+            CreateMap<Raza,RazaDto>().ReverseMap();
         }
     }
 }

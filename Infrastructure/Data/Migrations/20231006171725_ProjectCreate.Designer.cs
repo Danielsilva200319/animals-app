@@ -245,7 +245,7 @@ namespace Infrastructure.Data.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("FechaNacimiento")
-                        .HasColumnType("datatime");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("IdCliente")
                         .HasColumnType("int");
