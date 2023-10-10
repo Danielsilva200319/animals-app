@@ -16,6 +16,8 @@ namespace core.Interfaces
         IServicioRepository Servicios { get; }
         IClienteTelRepository ClientesTels { get; }
         IClienteDirRepository ClientesDirs { get; }
+        ICitaRepository Citas { get; }
+
         Task<int> SaveAsync();
     }
 }

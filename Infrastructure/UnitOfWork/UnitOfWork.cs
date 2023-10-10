@@ -16,7 +16,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private CiudadRepository _ciudades;
     private DepartamentoRepository _departamentos;
     private ClienteRepository _clientes;
-
+    private CitaRepository _citas;
     private MascotaRepository _mascotas;
     private RazaRepository _razas;
     private ServicioRepository _servicios;
@@ -121,6 +121,17 @@ public class UnitOfWork : IUnitOfWork, IDisposable
                 _clientesDirs = new ClienteDirRepository(_context);
             }
             return _clientesDirs;
+        }
+    }
+    public ICitaRepository Citas
+    {
+        get
+        {
+            if(_citas == null)
+            {
+                _citas = new CitaRepository(_context);
+            }
+            return _citas;
         }
     }
     public UnitOfWork(AnimalsContext context)
