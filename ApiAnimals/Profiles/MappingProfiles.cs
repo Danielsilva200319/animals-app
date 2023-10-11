@@ -20,7 +20,6 @@ namespace ApiAnimals.Profiles
             CreateMap<Cliente,ClienteDto>().ReverseMap();
             CreateMap<Raza,RazaDto>().ReverseMap();
             CreateMap<Cita,CitaDto>().ReverseMap();
-
         }
     }
 }
